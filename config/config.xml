@@ -1,0 +1,28 @@
+<root>
+	<!-- the protocol files be stored folder, file path or folder path-->
+	<protocol>
+		<folder>./message</folder>
+	</protocol>
+	
+	<!-- for output as3 code -->
+	<output name="actionscript3">
+		<!-- origin{single, each-message, each-object} -->
+		<output-item template-folder="./template" template-file="ClientMessage.ftl" origin="each-message" to="./output/as3/protocol/custom/${name}.as" charset="UTF-8">
+			<injection>messageVO</injection>
+			<injection>typeDef</injection>
+		</output-item>
+		
+		<output-item template-folder="./template" template-file="ClientClass.ftl" origin="each-object" to="./output/as3/protocol/vo/${type}.as" charset="UTF-8">
+			<injection>messageContentVO</injection>
+			<injection>typeDef</injection>
+		</output-item>
+		
+		<output-item template-folder="./template" template-file="ClientMessageType.ftl" origin="single" to="./output/as3/protocol/RemoteMessageType.as" charset="UTF-8">
+			<injection>messages</injection>
+		</output-item>
+		
+		<output-item template-folder="./template" template-file="ClientMessageRegister.ftl" origin="single" to="./output/as3/protocol/RemoteMessageRegister.as" charset="UTF-8">
+			<injection>messages</injection>
+		</output-item>
+	</output>
+</root>
