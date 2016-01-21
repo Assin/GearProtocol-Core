@@ -1,0 +1,14 @@
+#Fat Jar Configuration File
+#Sat Mar 22 22:54:15 CST 2014
+onejar.license.required=false
+manifest.classpath=
+manifest.removesigners=true
+onejar.checkbox=false
+jarname=GearProtocol.jar
+manifest.mergeall=true
+manifest.mainclass=GearProtocol
+manifest.file=<createnew>
+jarname.isextern=false
+onejar.expand=
+excludes=
+includes=
