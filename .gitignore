@@ -18,4 +18,4 @@ hs_err_pid*
 !/message/sample.xml
 /build.xml
 !/bin
-/.setting/*
+/.settings/*
