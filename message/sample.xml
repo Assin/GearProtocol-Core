@@ -4,28 +4,28 @@
 	
 		<backMessage id="3901" type="SC_MAIL_LIST_BACK" name="MailListBack" comment="返回邮件信息列表">
 			<List name="MailList" type="NetMailListVO" comment="邮件列表信息">
-				<attribute name="guid" type="long" comment="邮件guid"/>
+				<attribute name="guid" type="int64" comment="邮件guid"/>
 				<attribute name="mailTitle" type="string" length="65" comment="邮件主题"/>
 				<attribute name="senderName" type="string" length="65" comment="发送方名称"/>
-				<attribute name="liftTime" type="int" comment="邮件期限时间"/>
-				<attribute name="readed" type="int" comment="是否已读.1完成,0未完成"/>
-				<attribute name="sysMail" type="int" comment="是否为系统邮件.1 ：是,0：不是，2：背包满系统发送"/>
-				<attribute name="itemid" type="int" comment="首个道具ID,0则没有"/>
+				<attribute name="liftTime" type="int32" comment="邮件期限时间"/>
+				<attribute name="readed" type="int32" comment="是否已读.1完成,0未完成"/>
+				<attribute name="sysMail" type="int32" comment="是否为系统邮件.1 ：是,0：不是，2：背包满系统发送"/>
+				<attribute name="itemid" type="int32" comment="首个道具ID,0则没有"/>
 			</List>
 		</backMessage>
 		
 		<sendMessage id="3902" type="CS_READ_MAIL_REQUEST" name="RequestMailRead" comment="请求读邮件">
-			<attribute name="guid" type="long" comment="邮件guid"/>
+			<attribute name="guid" type="int64" comment="邮件guid"/>
 		</sendMessage>
 		
 		<backMessage id="3903" type="SC_READ_MAIL_BACK" name="ReadMailBack" comment="返回读取的邮件信息">
-				<attribute name="guid" type="long" comment="邮件guid"/>
+				<attribute name="guid" type="int64" comment="邮件guid"/>
 				<attribute name="mailContent" type="string" length="1001" comment="邮件内容"/>
-				<attribute name="liftTime" type="int" comment="邮件期限时间"/>
-				<attribute name="sendLv" type="int" comment="发件人等级"/>
+				<attribute name="liftTime" type="int32" comment="邮件期限时间"/>
+				<attribute name="sendLv" type="int32" comment="发件人等级"/>
 				<List name="MailItemList" type="NetMailItemListVO" comment="邮件道具信息">
-						<attribute name="itemid" type="int" comment="道具ID"/>
-						<attribute name="num" type="int" comment="道具个数"/>
+						<attribute name="itemid" type="int32" comment="道具ID"/>
+						<attribute name="num" type="int32" comment="道具个数"/>
 				</List>
 		</backMessage>		
 	</root>

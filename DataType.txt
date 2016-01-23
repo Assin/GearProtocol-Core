@@ -1,0 +1,8 @@
+GearProtocalType	ActionScript3
+int8				int
+int16				int
+int32				int
+int64 				String
+float				Number
+double				Number
+string				String

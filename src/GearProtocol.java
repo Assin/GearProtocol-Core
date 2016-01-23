@@ -50,6 +50,7 @@ public class GearProtocol {
 			}else if (element.getQName().getName().equals(ConfigXMLDefine.OUTPUT)){
 				OutputVO outputVO = new OutputVO();
 				outputVO.setName(element.attributeValue(ConfigXMLDefine.NAME));
+				outputVO.setProgramLanguage(element.attributeValue(ConfigXMLDefine.PROGRAM_LANGUAGE));
 				outputVO.setItems(new ArrayList<OutputItemVO>());
 				//解析output节点
 				for (Iterator<Element> e = element.elementIterator(); e.hasNext();) {
@@ -71,11 +72,12 @@ public class GearProtocol {
 					outputVO.getItems().add(itemVO);
 				}
 				DataManager.getInstance().addOutputVO(outputVO);
+				//解析协议内容 并输出
+				ParseProtocolXML getMessageXML = new ParseProtocolXML();
+				getMessageXML.parseProtocolXMLFileList(outputVO);
 			}
 
 		}
-		ParseProtocolXML getMessageXML = new ParseProtocolXML();
-		getMessageXML.parseProtocolXMLFileList();
 	}
 
 }

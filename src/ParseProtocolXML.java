@@ -10,6 +10,7 @@ import data.DataManager;
 import data.ProtocolType;
 import utils.StringUtil;
 import utils.TypeUtil;
+import vo.OutputVO;
 import vo.ProtocolContentVO;
 import vo.ProtocolVO;
 
@@ -19,9 +20,19 @@ import vo.ProtocolVO;
 
 public class ParseProtocolXML {
 	public static ArrayList<String> PROTOCOL_FILE_LIST = new ArrayList<String>();
+	private OutputVO currentOutputVO;
 	
+	public OutputVO getCurrentOutputVO() {
+		return currentOutputVO;
+	}
+
+	public void setCurrentOutputVO(OutputVO currentOutputVO) {
+		this.currentOutputVO = currentOutputVO;
+	}
+
 	//解析协议xml文件列表
-	public void parseProtocolXMLFileList() throws Exception {
+	public void parseProtocolXMLFileList(OutputVO outputVO) throws Exception {
+		setCurrentOutputVO(outputVO);
 		//遍历每个文件夹的每个协议xml文件去解析
 		for (String item : PROTOCOL_FILE_LIST) {
 			File folder = new File(item).getCanonicalFile();
@@ -42,7 +53,7 @@ public class ParseProtocolXML {
 			}	
 		}
 		OutputProtocolFile outputFile = new OutputProtocolFile();
-		outputFile.output();
+		outputFile.output(outputVO);
 	}
 	
 	private void parse(File currentFile, Document doc) throws Exception {
@@ -109,13 +120,16 @@ public class ParseProtocolXML {
 		}
 		
 		if (messageContentVO.getContentType().equals(ProtocolType.OBJECT) || (messageContentVO.getContentType().equals(ProtocolType.List) && messageContentVO.getHasChildren())) {
+			//这里处理了自定义类型的type，也就是要单独生成类
 			messageContentVO.setType(StringUtil.toUpperCaseFirstChart(element.attributeValue(ProtocolType.TYPE)));
 			messageContentVO.getFieldMap().put(ProtocolType.TYPE, messageContentVO.getType());
 			// messageContentVO.setDefType(messageContentVO.getType());
 		} else {
+			//处理基本类型定义
 			messageContentVO.setDefType(element.attributeValue(ProtocolType.TYPE).toLowerCase());
-			messageContentVO.setType(TypeUtil.parseDefTypeToRealType(messageContentVO.getDefType()));
-			messageContentVO.setServerType(TypeUtil.parseDefTypeToRealServerType(messageContentVO.getDefType()));
+			messageContentVO.setType(TypeUtil.parseDefTypeToRealType(currentOutputVO.getProgramLanguage(), messageContentVO.getDefType()));
+			//TODO 这里是之前遗留的写死的处理服务器生成，可以考虑不用
+			//messageContentVO.setServerType(TypeUtil.parseDefTypeToRealServerType(messageContentVO.getDefType()));
 			messageContentVO.getFieldMap().put(ProtocolType.TYPE, messageContentVO.getType());
 		}
 		

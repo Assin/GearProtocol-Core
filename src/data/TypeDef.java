@@ -4,125 +4,32 @@ package data;
  */
 
 public class TypeDef {
+//	public String NUMBER = "number";
+//	public String INT = "int";
+//	public String SHORT = "short";
+//	public String STRING = "string";
+//	public String FLOAT = "float";
+//	public String BYTE = "byte";
+//	public String LONG = "long";
 
-	public String NUMBER = "number";
-	public String INT = "int";
-	public String SHORT = "short";
-	public String STRING = "string";
-	public String FLOAT = "float";
-	public String BYTE = "byte";
-	public String LONG = "long";
-	
+//	int8				byte
+//	int16				short
+//	int32				int
+//	int64 				String
+//	float				Number
+//	string				String
+	public String GP_INT8 = "int8";
+	public String GP_INT16 = "int16";
+	public String GP_INT32 = "int32";
+	public String GP_INT64 = "int64";
+	public String GP_FLOAT = "float";
+	public String GP_DOUBLE = "double";
+	public String GP_STRING = "string";
 	
 	public String ATTRIBUTE = "attribute";
 	public String OBJECT = "object";
 	public String LIST = "list";
-
-	/**
-	 * @return the nUMBER
-	 */
-	public String getNUMBER() {
-		return NUMBER;
-	}
-
-	/**
-	 * @param nUMBER
-	 *            the nUMBER to set
-	 */
-	public void setNUMBER(String nUMBER) {
-		NUMBER = nUMBER;
-	}
-
-	/**
-	 * @return the iNT
-	 */
-	public String getINT() {
-		return INT;
-	}
-
-	/**
-	 * @param iNT
-	 *            the iNT to set
-	 */
-	public void setINT(String iNT) {
-		INT = iNT;
-	}
-
-	/**
-	 * @return the sHORT
-	 */
-	public String getSHORT() {
-		return SHORT;
-	}
-
-	/**
-	 * @param sHORT
-	 *            the sHORT to set
-	 */
-	public void setSHORT(String sHORT) {
-		SHORT = sHORT;
-	}
-
-	/**
-	 * @return the sTRING
-	 */
-	public String getSTRING() {
-		return STRING;
-	}
-
-	/**
-	 * @param sTRING
-	 *            the sTRING to set
-	 */
-	public void setSTRING(String sTRING) {
-		STRING = sTRING;
-	}
-
-	/**
-	 * @return the fLOAT
-	 */
-	public String getFLOAT() {
-		return FLOAT;
-	}
-
-	/**
-	 * @param fLOAT
-	 *            the fLOAT to set
-	 */
-	public void setFLOAT(String fLOAT) {
-		FLOAT = fLOAT;
-	}
-
-	/**
-	 * @return the bYTE
-	 */
-	public String getBYTE() {
-		return BYTE;
-	}
-
-	/**
-	 * @param bYTE
-	 *            the bYTE to set
-	 */
-	public void setBYTE(String bYTE) {
-		BYTE = bYTE;
-	}
-
-	/**
-	 * @return the lONG
-	 */
-	public String getLONG() {
-		return LONG;
-	}
-
-	/**
-	 * @param lONG
-	 *            the lONG to set
-	 */
-	public void setLONG(String lONG) {
-		LONG = lONG;
-	}
-
+	
 	/**
 	 * @return the aTTRIBUTE
 	 */
@@ -166,5 +73,61 @@ public class TypeDef {
 	 */
 	public void setLIST(String list) {
 		LIST = list;
+	}
+
+	public String getGP_INT8() {
+		return GP_INT8;
+	}
+
+	public void setGP_INT8(String gP_INT8) {
+		GP_INT8 = gP_INT8;
+	}
+
+	public String getGP_INT16() {
+		return GP_INT16;
+	}
+
+	public void setGP_INT16(String gP_INT16) {
+		GP_INT16 = gP_INT16;
+	}
+
+	public String getGP_INT32() {
+		return GP_INT32;
+	}
+
+	public void setGP_INT32(String gP_INT32) {
+		GP_INT32 = gP_INT32;
+	}
+
+	public String getGP_INT64() {
+		return GP_INT64;
+	}
+
+	public void setGP_INT64(String gP_INT64) {
+		GP_INT64 = gP_INT64;
+	}
+
+	public String getGP_FLOAT() {
+		return GP_FLOAT;
+	}
+
+	public void setGP_FLOAT(String gP_FLOAT) {
+		GP_FLOAT = gP_FLOAT;
+	}
+
+	public String getGP_DOUBLE() {
+		return GP_DOUBLE;
+	}
+
+	public void setGP_DOUBLE(String gP_DOUBLE) {
+		GP_DOUBLE = gP_DOUBLE;
+	}
+
+	public String getGP_STRING() {
+		return GP_STRING;
+	}
+
+	public void setGP_STRING(String gP_STRING) {
+		GP_STRING = gP_STRING;
 	}
 }

@@ -5,7 +5,7 @@
 	</protocol>
 	
 	<!-- for output as3 code -->
-	<output name="actionscript3">
+	<output name="flash-as3" program-language="ActionScript3">
 		<!-- origin{single, each-message, each-object} -->
 		<output-item template-folder="./template" template-file="ClientMessage.ftl" origin="each-message" to="./output/as3/protocol/custom/${name}.as" charset="UTF-8">
 			<injection>messageVO</injection>

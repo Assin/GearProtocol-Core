@@ -27,68 +27,65 @@ import freemarker.template.TemplateException;
  */
 
 public class OutputProtocolFile {
-	public void output() {
+	public void output(OutputVO outputVO) {
 
-		for (OutputVO outputVO : DataManager.getInstance().getOutputVOList()) {
-			for (OutputItemVO item : outputVO.getItems()) {
+		for (OutputItemVO item : outputVO.getItems()) {
+			Configuration cfg = new Configuration();
+			cfg.setObjectWrapper(new DefaultObjectWrapper());
+			try {
+				cfg.setDirectoryForTemplateLoading(new File(item.getTemplateFolder()));
+				Template temp = cfg.getTemplate(item.getTemplateFile());
+				if (item.getOrigin().equals(OutputItemOriginType.SINGLE)) {
+					// 要注入的内容
+					Map<String, Object> map = new HashMap<String, Object>();
+					for (String injectionString : item.getInjectionList()) {
+						execInjectionToMap(map, injectionString, null, null);
+					}
+					String path = getOutputFilePath(0, new String(item.getTo()), null, null);
+					File file = FileUtil.getOutPutFile(path, true);
+					Writer out = new OutputStreamWriter(new FileOutputStream(file), item.getCharset());
+					temp.process(map, out);
+					out.flush();
+				} else {
 
-				Configuration cfg = new Configuration();
-				cfg.setObjectWrapper(new DefaultObjectWrapper());
-				try {
-					cfg.setDirectoryForTemplateLoading(new File(item.getTemplateFolder()));
-					Template temp = cfg.getTemplate(item.getTemplateFile());
-					if (item.getOrigin().equals(OutputItemOriginType.SINGLE)) {
-						// 要注入的内容
-						Map<String, Object> map = new HashMap<String, Object>();
-						for (String injectionString : item.getInjectionList()) {
-							execInjectionToMap(map, injectionString, null, null);
-						}
-						String path = getOutputFilePath(0, new String(item.getTo()), null, null);
-						File file = FileUtil.getOutPutFile(path, true);
-						Writer out = new OutputStreamWriter(new FileOutputStream(file), item.getCharset());
-						temp.process(map, out);
-						out.flush();
-					} else {
-
-						if (item.getOrigin().equals(OutputItemOriginType.EACH_MESSAGE)) {
-							List<ProtocolVO> list = DataManager.getInstance().getMessages();
-							for (ProtocolVO messageVO : list) {
-								// 要注入的内容
-								Map<String, Object> map = new HashMap<String, Object>();
-								for (String injectionString : item.getInjectionList()) {
-									execInjectionToMap(map, injectionString, messageVO, null);
-								}
-								String path = getOutputFilePath(0, new String(item.getTo()), messageVO, null);
-								File file = FileUtil.getOutPutFile(path, true);
-								Writer out = new OutputStreamWriter(new FileOutputStream(file), item.getCharset());
-								temp.process(map, out);
-								out.flush();
+					if (item.getOrigin().equals(OutputItemOriginType.EACH_MESSAGE)) {
+						List<ProtocolVO> list = DataManager.getInstance().getMessages();
+						for (ProtocolVO messageVO : list) {
+							// 要注入的内容
+							Map<String, Object> map = new HashMap<String, Object>();
+							for (String injectionString : item.getInjectionList()) {
+								execInjectionToMap(map, injectionString, messageVO, null);
 							}
-						}
-						if (item.getOrigin().equals(OutputItemOriginType.EACH_OBJECT)) {
-							List<ProtocolContentVO> list = DataManager.getInstance().getObjects();
-							for (ProtocolContentVO messageContentVO : list) {
-								// 要注入的内容
-								Map<String, Object> map = new HashMap<String, Object>();
-								for (String injectionString : item.getInjectionList()) {
-									execInjectionToMap(map, injectionString, null, messageContentVO);
-								}
-								String path = getOutputFilePath(0, new String(item.getTo()), null, messageContentVO);
-								File file = FileUtil.getOutPutFile(path, true);
-								Writer out = new OutputStreamWriter(new FileOutputStream(file), item.getCharset());
-								temp.process(map, out);
-								out.flush();
-							}
+							String path = getOutputFilePath(0, new String(item.getTo()), messageVO, null);
+							File file = FileUtil.getOutPutFile(path, true);
+							Writer out = new OutputStreamWriter(new FileOutputStream(file), item.getCharset());
+							temp.process(map, out);
+							out.flush();
 						}
 					}
-				} catch (IOException e) {
-					e.printStackTrace();
-				} catch (TemplateException e) {
-					e.printStackTrace();
+					if (item.getOrigin().equals(OutputItemOriginType.EACH_OBJECT)) {
+						List<ProtocolContentVO> list = DataManager.getInstance().getObjects();
+						for (ProtocolContentVO messageContentVO : list) {
+							// 要注入的内容
+							Map<String, Object> map = new HashMap<String, Object>();
+							for (String injectionString : item.getInjectionList()) {
+								execInjectionToMap(map, injectionString, null, messageContentVO);
+							}
+							String path = getOutputFilePath(0, new String(item.getTo()), null, messageContentVO);
+							File file = FileUtil.getOutPutFile(path, true);
+							Writer out = new OutputStreamWriter(new FileOutputStream(file), item.getCharset());
+							temp.process(map, out);
+							out.flush();
+						}
+					}
 				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (TemplateException e) {
+				e.printStackTrace();
 			}
-			System.out.println("output" + " " + outputVO.getName() + " " + "done");
 		}
+		System.out.println("output" + " " + outputVO.getName() + " " + "done");
 	}
 
 	private void execInjectionToMap(Map<String, Object> map, String injectionString, ProtocolVO messageVO, ProtocolContentVO messageContentVO) {
