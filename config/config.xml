@@ -6,6 +6,15 @@
 	
 	<!-- for output as3 code -->
 	<output name="flash-as3" program-language="ActionScript3">
+		<!-- GearProtocal datatype convert to programlanguange datatype -->
+		<convert-datatype gptype="int8" to="byte"/>
+		<convert-datatype gptype="int16" to="short"/>
+		<convert-datatype gptype="int32" to="int"/>
+		<convert-datatype gptype="int64" to="String"/>
+		<convert-datatype gptype="float" to="Number"/>
+		<convert-datatype gptype="double" to="Number"/>
+		<convert-datatype gptype="string" to="String"/>
+		
 		<!-- origin{single, each-message, each-object} -->
 		<output-item template-folder="./template" template-file="ClientMessage.ftl" origin="each-message" to="./output/as3/protocol/custom/${name}.as" charset="UTF-8">
 			<injection>messageVO</injection>

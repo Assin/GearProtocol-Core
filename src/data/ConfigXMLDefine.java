@@ -2,6 +2,8 @@ package data;
 public class ConfigXMLDefine {
 	public static final String PROTOCOL = "protocol";
 	public static final String FOLDER = "folder";
+	public static final String CONVERT_DATATYPE = "convert-datatype";
+	public static final String GPTYPE = "gptype";
 	public static final String OUTPUT = "output";
 	public static final String NAME = "name";
 	public static final String PROGRAM_LANGUAGE = "program-language";

@@ -8,6 +8,7 @@ import org.dom4j.io.SAXReader;
 
 import data.ConfigXMLDefine;
 import data.DataManager;
+import vo.ConvertDataTypeVO;
 import vo.OutputItemVO;
 import vo.OutputVO;
 
@@ -38,41 +39,49 @@ public class GearProtocol {
 		for (Iterator<Element> i = docRoot.elementIterator(); i.hasNext();) {
 			Element element = i.next();
 			if (element.getQName().getName().equals(ConfigXMLDefine.PROTOCOL)) {
-				//解析protocol节点
+				// 解析protocol节点
 				for (Iterator<Element> e = element.elementIterator(); e.hasNext();) {
 					Element folderItem = e.next();
-					//解析folder节点
-					if(folderItem.getQName().getName().equals(ConfigXMLDefine.FOLDER))
-					{
+					// 解析folder节点
+					if (folderItem.getQName().getName().equals(ConfigXMLDefine.FOLDER)) {
 						ParseProtocolXML.PROTOCOL_FILE_LIST.add(folderItem.getTextTrim());
 					}
 				}
-			}else if (element.getQName().getName().equals(ConfigXMLDefine.OUTPUT)){
+			} else if (element.getQName().getName().equals(ConfigXMLDefine.OUTPUT)) {
 				OutputVO outputVO = new OutputVO();
 				outputVO.setName(element.attributeValue(ConfigXMLDefine.NAME));
 				outputVO.setProgramLanguage(element.attributeValue(ConfigXMLDefine.PROGRAM_LANGUAGE));
+				outputVO.setConverDataTypes(new ArrayList<ConvertDataTypeVO>());
 				outputVO.setItems(new ArrayList<OutputItemVO>());
-				//解析output节点
+				// 解析output节点
 				for (Iterator<Element> e = element.elementIterator(); e.hasNext();) {
-					Element outputItem = e.next();
-					OutputItemVO itemVO = new OutputItemVO();
-					itemVO.setTemplateFolder(outputItem.attributeValue(ConfigXMLDefine.TEMPLATE_FOLDER));
-					itemVO.setTemplateFile(outputItem.attributeValue(ConfigXMLDefine.TEMPLATE_FILE));
-					itemVO.setOrigin(outputItem.attributeValue(ConfigXMLDefine.ORIGIN).toLowerCase());
-					itemVO.setTo(outputItem.attributeValue(ConfigXMLDefine.TO));
-					itemVO.setCharset(outputItem.attributeValue(ConfigXMLDefine.CHARSET));
-					itemVO.setInjectionList(new ArrayList<String>());
-					//解析injection节点
-					for (Iterator<Element> injectionElement = outputItem.elementIterator(); injectionElement.hasNext();) {
-						Element injectionItem = injectionElement.next();
-						if (injectionItem.getQName().getName().equals(ConfigXMLDefine.INJECTION)) {
-							itemVO.getInjectionList().add(injectionItem.getTextTrim());
+					Element item = e.next();
+					if (item.getQName().getName().equals(ConfigXMLDefine.CONVERT_DATATYPE)) {
+						ConvertDataTypeVO convertVO = new ConvertDataTypeVO();
+						convertVO.setGptype(item.attributeValue(ConfigXMLDefine.GPTYPE));
+						convertVO.setTo(item.attributeValue(ConfigXMLDefine.TO));
+						outputVO.getConverDataTypes().add(convertVO);
+					} else if (item.getQName().getName().equals(ConfigXMLDefine.OUTPUT_ITEM)) {
+						OutputItemVO itemVO = new OutputItemVO();
+						itemVO.setTemplateFolder(item.attributeValue(ConfigXMLDefine.TEMPLATE_FOLDER));
+						itemVO.setTemplateFile(item.attributeValue(ConfigXMLDefine.TEMPLATE_FILE));
+						itemVO.setOrigin(item.attributeValue(ConfigXMLDefine.ORIGIN).toLowerCase());
+						itemVO.setTo(item.attributeValue(ConfigXMLDefine.TO));
+						itemVO.setCharset(item.attributeValue(ConfigXMLDefine.CHARSET));
+						itemVO.setInjectionList(new ArrayList<String>());
+						// 解析injection节点
+						for (Iterator<Element> injectionElement = item.elementIterator(); injectionElement.hasNext();) {
+							Element injectionItem = injectionElement.next();
+							if (injectionItem.getQName().getName().equals(ConfigXMLDefine.INJECTION)) {
+								itemVO.getInjectionList().add(injectionItem.getTextTrim());
+							}
 						}
+						outputVO.getItems().add(itemVO);
 					}
-					outputVO.getItems().add(itemVO);
 				}
+
 				DataManager.getInstance().addOutputVO(outputVO);
-				//解析协议内容 并输出
+				// 解析协议内容 并输出
 				ParseProtocolXML getMessageXML = new ParseProtocolXML();
 				getMessageXML.parseProtocolXMLFileList(outputVO);
 			}

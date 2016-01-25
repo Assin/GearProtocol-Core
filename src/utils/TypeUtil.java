@@ -1,5 +1,8 @@
 package utils;
 
+import java.util.List;
+
+import vo.ConvertDataTypeVO;
 import data.ProgramLanguageType;
 import data.TypeDef;
 
@@ -8,10 +11,13 @@ import data.TypeDef;
  */
 
 public class TypeUtil {
-	public static String parseDefTypeToRealType(String programLanguageType, String defType) {
+	public static String parseDefTypeToRealType(List<ConvertDataTypeVO> conversDatatypes, String programLanguageType, String defType) {
 		String str = "";
 		// 判断语言找到对应方法
-		if (programLanguageType.equals(ProgramLanguageType.ACTIONSCRIPT3)) {
+		// 先判断是否有自己定义的转换列表
+		if (conversDatatypes.size() > 0) {
+			str = getRealType(conversDatatypes, defType);
+		} else if (programLanguageType.equals(ProgramLanguageType.ACTIONSCRIPT3)) {
 			str = GetActionScript3RealType(defType);
 		}
 		if (str == "") {
@@ -19,6 +25,20 @@ public class TypeUtil {
 				throw new Exception("ERROR_PROPRETY_TYPE: " + defType);
 			} catch (Exception e) {
 				e.printStackTrace();
+			}
+		}
+		return str;
+	}
+
+	public static String getRealType(List<ConvertDataTypeVO> conversDatatypes, String defType) {
+		String str = "";
+		if (conversDatatypes.size() == 0) {
+			return "";
+		}
+		for (ConvertDataTypeVO convertDataTypeVO : conversDatatypes) {
+			if (convertDataTypeVO.getGptype().equals(defType)) {
+				str = convertDataTypeVO.getTo();
+				break;
 			}
 		}
 		return str;
